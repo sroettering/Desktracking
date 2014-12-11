@@ -29,11 +29,7 @@ PCLViewer::PCLViewer (QWidget *parent) :
   connect (ui->radioButton_y, SIGNAL(clicked ()), this, SLOT(axisChosen ()));
   connect (ui->radioButton_z, SIGNAL(clicked ()), this, SLOT(axisChosen ()));
 
-  connect (ui->radioButton_BlueRed, SIGNAL(clicked ()), this, SLOT(lookUpTableChosen()));
-  connect (ui->radioButton_GreenMagenta, SIGNAL(clicked ()), this, SLOT(lookUpTableChosen()));
-  connect (ui->radioButton_WhiteRed, SIGNAL(clicked ()), this, SLOT(lookUpTableChosen()));
-  connect (ui->radioButton_GreyRed, SIGNAL(clicked ()), this, SLOT(lookUpTableChosen()));
-  connect (ui->radioButton_Rainbow, SIGNAL(clicked ()), this, SLOT(lookUpTableChosen()));
+  connect (ui->StartReceiverButton, SIGNAL(clicked()) , this, SLOT(on_StartReceiverButton_clicked()));
 
   //viewer_->addPointCloud (nullptr, "cloud");
   viewer_->resetCamera ();
@@ -133,41 +129,6 @@ PCLViewer::axisChosen ()
   {
     PCL_INFO("z filtering chosen\n");
     filtering_axis_ = 2;
-  }
-
-  colorCloudDistances ();
-  viewer_->updatePointCloud (cloud_, "cloud");
-  ui->qvtkWidget->update ();
-}
-
-void
-PCLViewer::lookUpTableChosen ()
-{
-  // Only 1 of the button can be checked at the time (mutual exclusivity) in a group of radio buttons
-  if (ui->radioButton_BlueRed->isChecked ())
-  {
-    PCL_INFO("Blue -> Red LUT chosen\n");
-    color_mode_ = 0;
-  }
-  else if (ui->radioButton_GreenMagenta->isChecked ())
-  {
-    PCL_INFO("Green -> Magenta LUT chosen\n");
-    color_mode_ = 1;
-  }
-  else if (ui->radioButton_WhiteRed->isChecked ())
-  {
-    PCL_INFO("White -> Red LUT chosen\n");
-    color_mode_ = 2;
-  }
-  else if (ui->radioButton_GreyRed->isChecked ())
-  {
-    PCL_INFO("Grey / Red LUT chosen\n");
-    color_mode_ = 3;
-  }
-  else
-  {
-    PCL_INFO("Rainbow LUT chosen\n");
-    color_mode_ = 4;
   }
 
   colorCloudDistances ();
@@ -291,4 +252,9 @@ PCLViewer::colorCloudDistances ()
         cloud_it->b = value < 128 ? 255 - (2 * value) : 0;  // b[0] = 255, b[128] = 0
     }
   }
+}
+
+void PCLViewer::on_StartReceiverButton_clicked()
+{
+    receiver.receiveFrames();
 }

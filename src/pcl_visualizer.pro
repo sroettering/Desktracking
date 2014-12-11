@@ -16,6 +16,7 @@ SOURCES += main.cpp\
         pclviewer.cpp \
     KinectFrameReceiver.cpp
 
-HEADERS  += pclviewer.h
+HEADERS  += pclviewer.h \
+    KinectFrameReceiver.h
 
 FORMS    += pclviewer.ui

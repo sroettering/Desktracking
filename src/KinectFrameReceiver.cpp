@@ -1,7 +1,4 @@
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
-#include <iostream>
-#include <conio.h>
+#include "KinectFrameReceiver.h"
 
 typedef struct _CameraSpacePoint {
     float X;
@@ -18,8 +15,10 @@ struct SharedMemory {
     CameraSpacePoint elements[640 * 480];
 };
 
+KinectFrameReceiver::KinectFrameReceiver() {
+}
 
-int main() {
+int KinectFrameReceiver::receiveFrames() {
     HANDLE frameReadyEvent = OpenEvent(EVENT_MODIFY_STATE, FALSE, KINECT_FRAME_READY_EVENT_NAME);
     if(frameReadyEvent == NULL) {
         std::cerr << "Couldn't open frame ready event" << std::endl;

@@ -19,6 +19,8 @@
 // Visualization Toolkit (VTK)
 #include <vtkRenderWindow.h>
 
+#include "KinectFrameReceiver.h"
+
 typedef pcl::PointXYZRGBA PointT;
 typedef pcl::PointCloud<PointT> PointCloudT;
 
@@ -52,10 +54,6 @@ class PCLViewer : public QMainWindow
     void
     axisChosen ();
 
-    /** @brief Triggered whenever a button in the "Color mode" group is clicked */
-    void
-    lookUpTableChosen ();
-
   protected:
     /** @brief The PCL visualizer object */
     boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer_;
@@ -85,9 +83,13 @@ class PCLViewer : public QMainWindow
     void
     colorCloudDistances ();
 
-  private:
+private slots:
+    void on_StartReceiverButton_clicked();
+
+private:
     /** @brief ui pointer */
     Ui::PCLViewer *ui;
+    KinectFrameReceiver receiver;
 };
 
 #endif // PCLVIEWER_H
