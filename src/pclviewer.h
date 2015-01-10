@@ -23,6 +23,8 @@
 #include "KinectFrameReceiver.h"
 
 #include <map>
+#include <fstream>
+#include <iostream>
 
 using namespace std;
 
@@ -38,6 +40,9 @@ namespace Ui
 class PCLViewer : public QMainWindow
 {
   Q_OBJECT
+
+  static const int cDepthWidth  = 512;
+  static const int cDepthHeight = 424;
 
   public:
     /** @brief Constructor */
@@ -73,6 +78,9 @@ private:
     map<QString, PointCloudT::Ptr> pointClouds;
 
     bool isStreaming;
+
+    PointCloudT::Ptr initializeCloudFromDFR(string);
+    PointCloudT::Ptr initializeCloudFromTXT(string);
 };
 
 #endif // PCLVIEWER_H

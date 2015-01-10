@@ -1,6 +1,8 @@
 #include "pclviewer.h"
 #include "../build/ui_pclviewer.h"
 
+using namespace std;
+
 PCLViewer::PCLViewer (QWidget *parent) :
     QMainWindow (parent),
     ui (new Ui::PCLViewer),
@@ -138,6 +140,73 @@ void PCLViewer::toggleCloudSelection(QListWidgetItem* item) {
     }
     viewer_->resetCamera ();
     ui->qvtkWidget->update ();
+}
+
+PointCloudT::Ptr PCLViewer::initializeCloudFromDFR(std::string fileName) {
+    PointCloudT::Ptr cloud_ (new PointCloudT);
+    string line;
+    std::vector<std::string> splitLine;
+    float x;
+    float y;
+    float z;
+    ifstream clouddata;
+    clouddata.open (fileName, ios::in);
+
+    if(clouddata.is_open()) {
+        while(getline(clouddata,line)) {
+            if(line.find("INF") == string::npos) {
+                boost::split(splitLine, line, boost::is_any_of(";"));
+                x = stof(splitLine[0]);
+                y = stof(splitLine[1]);
+                z = stof(splitLine[2]);
+                cloud_->push_back(pcl::PointXYZ(x * -200,y * -200,z * 200));
+                splitLine.clear();
+            }
+        }
+        clouddata.close();
+
+    }
+    return cloud_;
+}
+
+PointCloudT::Ptr PCLViewer::initializeCloudFromTXT(string fileName) {
+    PointCloudT::Ptr cloud_ (new PointCloudT);
+
+    float maxZ = 0;
+    float cubeSize = 500;
+    string line;
+    ifstream clouddata;
+    clouddata.open (fileName, ios::in);
+    std::vector<float> depthData;
+
+    if (clouddata.is_open()) {
+
+        int rowCount = 0;
+        int colCount = 0;
+
+        while ( getline (clouddata,line) ) {
+            float z = std::stof(line);
+            depthData.push_back(z);
+            if(maxZ <= z) maxZ = z;
+        }
+        std::cout << maxZ << std::endl;
+        for each (float z in depthData) {
+            float x = colCount * cubeSize / cDepthWidth;
+            float y = rowCount * cubeSize / cDepthHeight;
+            float newZ = z * cubeSize / maxZ;
+
+            colCount++;
+
+            if (colCount == cDepthWidth) {
+                colCount = 0;
+                rowCount++;
+            }
+
+            if(z != 0) cloud_->push_back(pcl::PointXYZ(x,y,z));
+        }
+        clouddata.close();
+    }
+    return cloud_;
 }
 
 void PCLViewer::exitApplication() {
