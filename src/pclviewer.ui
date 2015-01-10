@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>896</width>
-    <height>498</height>
+    <width>1280</width>
+    <height>640</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -26,7 +26,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>PCLViewer</string>
+   <string>Desktracking</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -42,7 +42,7 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>180</width>
+          <width>240</width>
           <height>180</height>
          </size>
         </property>
@@ -54,78 +54,108 @@
          </font>
         </property>
         <property name="title">
-         <string>Point Cloud Viewer</string>
+         <string/>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout">
+          <layout class="QVBoxLayout" name="verticalLayout">
            <item>
-            <layout class="QVBoxLayout" name="verticalLayout">
-             <item>
-              <spacer name="verticalSpacer_2">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
+            <widget class="QTabWidget" name="tabWidget">
+             <property name="font">
+              <font>
+               <family>Arial</family>
+               <pointsize>8</pointsize>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
+             <property name="currentIndex">
+              <number>0</number>
+             </property>
+             <property name="elideMode">
+              <enum>Qt::ElideLeft</enum>
+             </property>
+             <widget class="QWidget" name="tab">
+              <attribute name="title">
+               <string>Source</string>
+              </attribute>
+              <widget class="QWidget" name="verticalLayoutWidget_2">
+               <property name="geometry">
+                <rect>
+                 <x>10</x>
+                 <y>0</y>
+                 <width>121</width>
+                 <height>101</height>
+                </rect>
                </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QPushButton" name="StartReceiverButton">
-               <property name="text">
-                <string>Start receiving</string>
-               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_3">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QPushButton" name="loadButton">
+                  <property name="text">
+                   <string>Load PCD file</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="saveButton">
+                  <property name="text">
+                   <string>Save as PCD file</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="streamButton">
+                  <property name="text">
+                   <string>Start Live Stream</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
               </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_load">
-               <property name="minimumSize">
-                <size>
-                 <width>50</width>
-                 <height>40</height>
-                </size>
+              <widget class="QGroupBox" name="groupBox">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>120</y>
+                 <width>211</width>
+                 <height>311</height>
+                </rect>
                </property>
-               <property name="text">
-                <string>Load file</string>
+               <property name="title">
+                <string>Active Point Clouds</string>
                </property>
+               <widget class="QListWidget" name="listWidget">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>20</y>
+                  <width>191</width>
+                  <height>281</height>
+                 </rect>
+                </property>
+               </widget>
               </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_save">
-               <property name="minimumSize">
-                <size>
-                 <width>50</width>
-                 <height>40</height>
-                </size>
-               </property>
-               <property name="text">
-                <string>Save file</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
+             </widget>
+             <widget class="QWidget" name="tab_2">
+              <attribute name="title">
+               <string>Edit Cloud</string>
+              </attribute>
+             </widget>
+             <widget class="QWidget" name="tab_3">
+              <attribute name="title">
+               <string>Tracking</string>
+              </attribute>
+             </widget>
+            </widget>
            </item>
           </layout>
          </item>
         </layout>
        </widget>
-      </item>
-      <item>
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
       </item>
      </layout>
     </item>
@@ -152,7 +182,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>896</width>
+     <width>1280</width>
      <height>21</height>
     </rect>
    </property>
@@ -164,7 +194,6 @@
     <addaction name="actionOpen_Kinect_Stream"/>
     <addaction name="separator"/>
     <addaction name="actionSave_As"/>
-    <addaction name="actionSave"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>

@@ -4,6 +4,7 @@
 // Qt
 #include <QMainWindow>
 #include <QFileDialog>
+#include <QListWidgetItem>
 
 // Point Cloud Library
 #include <pcl/point_cloud.h>
@@ -21,8 +22,13 @@
 
 #include "KinectFrameReceiver.h"
 
+#include <map>
+
+using namespace std;
+
 typedef pcl::PointXYZ PointT; //RGBA PointT;
 typedef pcl::PointCloud<PointT> PointCloudT;
+typedef pair<QString, PointCloudT::Ptr> StringCloudPair;
 
 namespace Ui
 {
@@ -44,26 +50,29 @@ class PCLViewer : public QMainWindow
   public slots:
     /** @brief Triggered whenever the "Save file" button is clicked */
     void
-    saveFileButtonPressed ();
+    saveButtonPressed ();
 
     /** @brief Triggered whenever the "Load file" button is clicked */
     void
-    loadFileButtonPressed ();
+    loadButtonPressed ();
 
   protected:
     /** @brief The PCL visualizer object */
     boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer_;
 
-    /** @brief The point cloud displayed */
-    PointCloudT::Ptr cloud_;
-
 private slots:
-    void on_StartReceiverButton_clicked();
+    void streamButtonPressed();
+    void toggleCloudSelection(QListWidgetItem*);
+    void exitApplication();
 
 private:
     /** @brief ui pointer */
     Ui::PCLViewer *ui;
     KinectFrameReceiver receiver;
+
+    map<QString, PointCloudT::Ptr> pointClouds;
+
+    bool isStreaming;
 };
 
 #endif // PCLVIEWER_H

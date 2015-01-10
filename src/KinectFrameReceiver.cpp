@@ -1,19 +1,12 @@
 #include "KinectFrameReceiver.h"
 
-typedef struct _CameraSpacePoint {
-    float X;
-    float Y;
-    float Z;
-} CameraSpacePoint;
+
 
 const char * KINECT_FRAME_SHARED_MEMORY_NAME = "Local\\KinectFrameStreamMemory";
 const char * KINECT_FRAME_READY_EVENT_NAME = "Local\\KinectFrameReadyEvent";
 const char * KINECT_FRAME_MEMORY_ACCESS_MUTEX = "Local\\KinectFramMemoryeAccessMutex";
 
-struct SharedMemory {
-    unsigned int elementCount;
-    CameraSpacePoint elements[640 * 480];
-};
+
 
 KinectFrameReceiver::KinectFrameReceiver() {
 }
@@ -37,7 +30,7 @@ int KinectFrameReceiver::receiveFrames() {
         return EXIT_FAILURE;
     }
 
-    SharedMemory * sharedMemory = (SharedMemory *)MapViewOfFile(sharedMemoryHandle, FILE_MAP_ALL_ACCESS, 0, 0, sizeof(SharedMemory));
+    sharedMemory = (SharedMemory *)MapViewOfFile(sharedMemoryHandle, FILE_MAP_ALL_ACCESS, 0, 0, sizeof(SharedMemory));
     if(sharedMemory == nullptr) {
         std::cerr << "Couldn't open shared memory" << std::endl;
         return EXIT_FAILURE;

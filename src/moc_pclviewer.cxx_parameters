@@ -1,0 +1,16 @@
+-IC:/Program Files (x86)/PCL 1.6.0/3rdParty/VTK/include/vtk-5.8
+-IC:/Program Files (x86)/PCL 1.6.0/include/pcl-1.6
+-IC:/Program Files (x86)/PCL 1.6.0/3rdParty/Eigen/include
+-IC:/Program Files (x86)/PCL 1.6.0/3rdParty/Boost/include
+-IC:/Program Files (x86)/OpenNI/Include
+-IC:/Program Files (x86)/PCL 1.6.0/3rdParty/VTK/include/vtk-5.8
+-IC:/Program Files (x86)/PCL 1.6.0/3rdParty/FLANN/include
+-IC:/Program Files (x86)/PCL 1.6.0/3rdParty/Qhull/include
+-DEIGEN_USE_NEW_STDVECTOR
+-DEIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET
+-DBOOST_ALL_NO_LIB
+-DFLANN_STATIC
+-DWIN32
+-o
+C:/Users/sroettering/Desktop/qtPCLtest/src/moc_pclviewer.cxx
+C:/Users/sroettering/Desktop/qtPCLtest/src/pclviewer.h

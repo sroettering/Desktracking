@@ -6,10 +6,23 @@
 #include <iostream>
 #include <conio.h>
 
+typedef struct _CameraSpacePoint {
+    float X;
+    float Y;
+    float Z;
+} CameraSpacePoint;
+
+struct SharedMemory {
+    unsigned int elementCount;
+    CameraSpacePoint elements[640 * 480];
+};
+
 class KinectFrameReceiver {
 public:
     KinectFrameReceiver();
     int receiveFrames();
+
+    SharedMemory *sharedMemory;
 private:
 };
 
