@@ -79,8 +79,8 @@ private:
 
     bool isStreaming;
 
-    PointCloudT::Ptr initializeCloudFromDFR(string);
-    PointCloudT::Ptr initializeCloudFromTXT(string);
+    int loadDFRFile(string, PointCloudT&);
+    int loadTXTFile(string, PointCloudT&);
 };
 
 #endif // PCLVIEWER_H

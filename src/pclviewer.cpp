@@ -51,7 +51,7 @@ void
 PCLViewer::loadButtonPressed ()
 {
   // You might want to change "/home/" if you're not on an *nix platform
-  QString filename = QFileDialog::getOpenFileName (this, tr ("Open point cloud"), "%UserProfile%", tr ("Point cloud data (*.pcd *.ply)"));
+  QString filename = QFileDialog::getOpenFileName (this, tr ("Open point cloud"), "%UserProfile%", tr ("Point cloud data (*.pcd *.ply *.txt *.dfr)"));
 
   PCL_INFO("File chosen: %s\n", filename.toStdString ().c_str ());
   PointCloudT::Ptr cloud_tmp (new PointCloudT);
@@ -62,8 +62,14 @@ PCLViewer::loadButtonPressed ()
   int return_status;
   if (filename.endsWith (".pcd", Qt::CaseInsensitive))
     return_status = pcl::io::loadPCDFile (filename.toStdString (), *cloud_tmp);
-  else
+  else if(filename.endsWith(".ply", Qt::CaseInsensitive))
     return_status = pcl::io::loadPLYFile (filename.toStdString (), *cloud_tmp);
+  else if(filename.endsWith(".dfr", Qt::CaseInsensitive))
+    return_status = loadDFRFile(filename.toStdString(), *cloud_tmp);
+  else if(filename.endsWith(".txt", Qt::CaseInsensitive))
+    return_status = loadTXTFile(filename.toStdString(), *cloud_tmp);
+  else
+    return_status = 1;
 
   if (return_status != 0)
   {
@@ -142,8 +148,7 @@ void PCLViewer::toggleCloudSelection(QListWidgetItem* item) {
     ui->qvtkWidget->update ();
 }
 
-PointCloudT::Ptr PCLViewer::initializeCloudFromDFR(std::string fileName) {
-    PointCloudT::Ptr cloud_ (new PointCloudT);
+int PCLViewer::loadDFRFile(std::string fileName, PointCloudT& cloud_) {
     string line;
     std::vector<std::string> splitLine;
     float x;
@@ -159,19 +164,17 @@ PointCloudT::Ptr PCLViewer::initializeCloudFromDFR(std::string fileName) {
                 x = stof(splitLine[0]);
                 y = stof(splitLine[1]);
                 z = stof(splitLine[2]);
-                cloud_->push_back(pcl::PointXYZ(x * -200,y * -200,z * 200));
+                cloud_.push_back(pcl::PointXYZ(x * -200,y * -200,z * 200));
                 splitLine.clear();
             }
         }
         clouddata.close();
-
+        return 0;
     }
-    return cloud_;
+    return 1;
 }
 
-PointCloudT::Ptr PCLViewer::initializeCloudFromTXT(string fileName) {
-    PointCloudT::Ptr cloud_ (new PointCloudT);
-
+int PCLViewer::loadTXTFile(string fileName, PointCloudT& cloud_) {
     float maxZ = 0;
     float cubeSize = 500;
     string line;
@@ -202,11 +205,12 @@ PointCloudT::Ptr PCLViewer::initializeCloudFromTXT(string fileName) {
                 rowCount++;
             }
 
-            if(z != 0) cloud_->push_back(pcl::PointXYZ(x,y,z));
+            if(z != 0) cloud_.push_back(pcl::PointXYZ(x,y,z));
         }
         clouddata.close();
+        return 0;
     }
-    return cloud_;
+    return 1;
 }
 
 void PCLViewer::exitApplication() {
