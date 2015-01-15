@@ -77,7 +77,7 @@
               <string notr="true"/>
              </property>
              <property name="currentIndex">
-              <number>1</number>
+              <number>0</number>
              </property>
              <property name="elideMode">
               <enum>Qt::ElideLeft</enum>
@@ -86,47 +86,11 @@
               <attribute name="title">
                <string>Source</string>
               </attribute>
-              <widget class="QWidget" name="verticalLayoutWidget_2">
-               <property name="geometry">
-                <rect>
-                 <x>10</x>
-                 <y>0</y>
-                 <width>121</width>
-                 <height>101</height>
-                </rect>
-               </property>
-               <layout class="QVBoxLayout" name="verticalLayout_3">
-                <property name="spacing">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QPushButton" name="loadButton">
-                  <property name="text">
-                   <string>Load PCD file</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="saveButton">
-                  <property name="text">
-                   <string>Save as PCD file</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="streamButton">
-                  <property name="text">
-                   <string>Start Live Stream</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
               <widget class="QGroupBox" name="groupBox">
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>120</y>
+                 <y>160</y>
                  <width>211</width>
                  <height>311</height>
                 </rect>
@@ -142,6 +106,71 @@
                   <width>191</width>
                   <height>281</height>
                  </rect>
+                </property>
+               </widget>
+              </widget>
+              <widget class="QGroupBox" name="groupBox_buttons">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>10</y>
+                 <width>211</width>
+                 <height>141</height>
+                </rect>
+               </property>
+               <property name="title">
+                <string>Options</string>
+               </property>
+               <widget class="QPushButton" name="loadButton">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>20</y>
+                  <width>191</width>
+                  <height>23</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>Load Point Cloud file</string>
+                </property>
+               </widget>
+               <widget class="QPushButton" name="unloadSingleButton">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>80</y>
+                  <width>191</width>
+                  <height>23</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>Unload selected Point Cloud</string>
+                </property>
+               </widget>
+               <widget class="QPushButton" name="streamButton">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>50</y>
+                  <width>191</width>
+                  <height>23</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>Start Kinectv2 Live Stream</string>
+                </property>
+               </widget>
+               <widget class="QPushButton" name="unloadAllButton">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>110</y>
+                  <width>191</width>
+                  <height>23</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string>Unload all Point Clouds</string>
                 </property>
                </widget>
               </widget>
@@ -505,7 +534,7 @@
     <addaction name="actionOpen_PCD_file"/>
     <addaction name="actionOpen_Kinect_Stream"/>
     <addaction name="separator"/>
-    <addaction name="actionSave_As"/>
+    <addaction name="actionConvert_to_PCD_file"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -570,6 +599,11 @@
   <action name="actionObject_tracking">
    <property name="text">
     <string>Object tracking</string>
+   </property>
+  </action>
+  <action name="actionConvert_to_PCD_file">
+   <property name="text">
+    <string>Convert to PCD file</string>
    </property>
   </action>
  </widget>

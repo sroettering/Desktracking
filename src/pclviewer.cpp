@@ -25,17 +25,18 @@ PCLViewer::PCLViewer (QWidget *parent) :
 
   // Connect "Load" and "Save" buttons and their functions
   connect (ui->loadButton, SIGNAL(clicked ()), this, SLOT(loadButtonPressed ()));
-  connect (ui->saveButton, SIGNAL(clicked ()), this, SLOT(saveButtonPressed ()));
+  connect (ui->unloadSingleButton, SIGNAL(clicked ()), this, SLOT(unloadSingleButtonPressed()));
+  connect (ui->unloadAllButton, SIGNAL(clicked ()), this, SLOT(unloadAllButtonPressed()));
   connect (ui->streamButton, SIGNAL(clicked()) , this, SLOT(streamButtonPressed()));
 
   // Connect Menu items to their functions
   connect (ui->actionOpen_PCD_file, SIGNAL(triggered()), this, SLOT(loadButtonPressed()));
-  connect (ui->actionSave_As, SIGNAL(triggered()), this, SLOT(saveButtonPressed()));
   connect (ui->actionOpen_Kinect_Stream, SIGNAL(triggered()), this, SLOT(streamButtonPressed()));
+  connect (ui->actionConvert_to_PCD_file, SIGNAL(triggered()), this, SLOT(convertAction()));
   connect (ui->actionExit, SIGNAL(triggered()), this, SLOT(exitApplication()));
 
   // Connect Items from cloud listWidget
-  connect (ui->listWidget, SIGNAL(itemPressed(QListWidgetItem*)), this, SLOT(toggleCloudSelection(QListWidgetItem*)));
+  connect (ui->listWidget, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(toggleCloudSelection(QListWidgetItem*)));
 
   //viewer_->addPointCloud (nullptr, "cloud");
   viewer_->resetCamera ();
@@ -91,16 +92,14 @@ PCLViewer::loadButtonPressed ()
   viewer_->addPointCloud (cloud_, filename.toStdString ());
   viewer_->resetCamera ();
   ui->qvtkWidget->update ();
-  cout << "test1" << endl;
-  QListWidgetItem* item = new QListWidgetItem(filename, ui->listWidget);
+  QListWidgetItem* item = new QListWidgetItem(filename);
   item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
   item->setCheckState(Qt::Checked);
-  cout << "test2" << endl,
   ui->listWidget->addItem(item);
 }
 
 void
-PCLViewer::saveButtonPressed ()
+PCLViewer::convertAction()
 {
   // You might want to change "/home/" if you're not on an *nix platform
   QString filename = QFileDialog::getSaveFileName(this, tr ("Open point cloud"), "%UserProfile%", tr ("Point cloud data (*.pcd *.ply)"));
@@ -110,15 +109,19 @@ PCLViewer::saveButtonPressed ()
   if (filename.isEmpty ())
     return;
 
+  QListWidgetItem *currItem = ui->listWidget->currentItem();
+  if(!currItem) return;
+
+  PointCloudT::Ptr cloud_ = pointClouds.find(currItem->text())->second;
   int return_status;
   if (filename.endsWith (".pcd", Qt::CaseInsensitive))
-    return_status = 0;//pcl::io::savePCDFileBinary (filename.toStdString (), *cloud_);
+    return_status = pcl::io::savePCDFileBinary (filename.toStdString (), *cloud_);
   else if (filename.endsWith (".ply", Qt::CaseInsensitive))
-    return_status = 0;//pcl::io::savePLYFileBinary (filename.toStdString (), *cloud_);
+    return_status = pcl::io::savePLYFileBinary (filename.toStdString (), *cloud_);
   else
   {
     filename.append(".ply");
-    //return_status = pcl::io::savePLYFileBinary (filename.toStdString (), *cloud_);
+    return_status = pcl::io::savePLYFileBinary (filename.toStdString (), *cloud_);
   }
 
   if (return_status != 0)
@@ -135,13 +138,21 @@ void PCLViewer::streamButtonPressed() {
     receiver.receiveFrames();
 }
 
+void PCLViewer::unloadAllButtonPressed() {
+    unloadAllClouds();
+}
+
+void PCLViewer::unloadSingleButtonPressed() {
+    QListWidgetItem *currItem = ui->listWidget->currentItem();
+    if(!currItem) return;
+    unloadCloud(currItem);
+}
+
 void PCLViewer::toggleCloudSelection(QListWidgetItem* item) {
     PointCloudT::Ptr cloud_ = pointClouds.find(item->text())->second;
-    if(item->checkState() == Qt::Unchecked) {
-        item->setCheckState(Qt::Checked);
+    if(item->checkState() == Qt::Checked) {
         viewer_->addPointCloud (cloud_, item->text().toStdString());
     } else {
-        item->setCheckState(Qt::Unchecked);
         viewer_->removePointCloud(item->text().toStdString());
     }
     viewer_->resetCamera ();
@@ -164,7 +175,7 @@ int PCLViewer::loadDFRFile(std::string fileName, PointCloudT& cloud_) {
                 x = stof(splitLine[0]);
                 y = stof(splitLine[1]);
                 z = stof(splitLine[2]);
-                cloud_.push_back(pcl::PointXYZ(x * -200,y * -200,z * 200));
+                cloud_.push_back(pcl::PointXYZ(x * -200,y * -200,z * -200));
                 splitLine.clear();
             }
         }
@@ -192,7 +203,6 @@ int PCLViewer::loadTXTFile(string fileName, PointCloudT& cloud_) {
             depthData.push_back(z);
             if(maxZ <= z) maxZ = z;
         }
-        std::cout << maxZ << std::endl;
         for each (float z in depthData) {
             float x = colCount * cubeSize / cDepthWidth;
             float y = rowCount * cubeSize / cDepthHeight;
@@ -211,6 +221,27 @@ int PCLViewer::loadTXTFile(string fileName, PointCloudT& cloud_) {
         return 0;
     }
     return 1;
+}
+
+void PCLViewer::unloadCloud(QListWidgetItem *currItem) {
+    QString name = currItem->text();
+    viewer_->removePointCloud(name.toStdString());
+    pointClouds.erase(pointClouds.find(name));
+    viewer_->resetCamera ();
+    ui->qvtkWidget->update ();
+    //ui->listWidget->removeItemWidget(currItem);
+    delete currItem;
+    ui->listWidget->update();
+}
+
+void PCLViewer::unloadAllClouds() {
+    viewer_->removeAllPointClouds();
+    viewer_->resetCamera();
+    ui->qvtkWidget->update();
+    int listSize = ui->listWidget->count();
+    for(int i = 0; i < listSize; i++) {
+        delete ui->listWidget->item(0);
+    }
 }
 
 void PCLViewer::exitApplication() {

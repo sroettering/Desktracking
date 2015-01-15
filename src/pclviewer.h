@@ -52,23 +52,18 @@ class PCLViewer : public QMainWindow
     /** @brief Destructor */
     ~PCLViewer ();
 
-  public slots:
-    /** @brief Triggered whenever the "Save file" button is clicked */
-    void
-    saveButtonPressed ();
-
-    /** @brief Triggered whenever the "Load file" button is clicked */
-    void
-    loadButtonPressed ();
-
   protected:
     /** @brief The PCL visualizer object */
     boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer_;
 
 private slots:
+    void loadButtonPressed();
     void streamButtonPressed();
+    void unloadSingleButtonPressed();
+    void unloadAllButtonPressed();
     void toggleCloudSelection(QListWidgetItem*);
     void exitApplication();
+    void convertAction();
 
 private:
     /** @brief ui pointer */
@@ -81,6 +76,8 @@ private:
 
     int loadDFRFile(string, PointCloudT&);
     int loadTXTFile(string, PointCloudT&);
+    void unloadCloud(QListWidgetItem*);
+    void unloadAllClouds();
 };
 
 #endif // PCLVIEWER_H

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'pclviewer.h'
 **
-** Created: Sun 11. Jan 15:33:34 2015
+** Created: Thu 15. Jan 15:54:11 2015
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.0)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_PCLViewer[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       5,   14, // methods
+       7,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -31,20 +31,23 @@ static const uint qt_meta_data_PCLViewer[] = {
        0,       // signalCount
 
  // slots: signature, parameters, type, tag, flags
-      11,   10,   10,   10, 0x0a,
-      31,   10,   10,   10, 0x0a,
-      51,   10,   10,   10, 0x08,
-      73,   10,   10,   10, 0x08,
-     112,   10,   10,   10, 0x08,
+      11,   10,   10,   10, 0x08,
+      31,   10,   10,   10, 0x08,
+      53,   10,   10,   10, 0x08,
+      81,   10,   10,   10, 0x08,
+     106,   10,   10,   10, 0x08,
+     145,   10,   10,   10, 0x08,
+     163,   10,   10,   10, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_PCLViewer[] = {
-    "PCLViewer\0\0saveButtonPressed()\0"
-    "loadButtonPressed()\0streamButtonPressed()\0"
+    "PCLViewer\0\0loadButtonPressed()\0"
+    "streamButtonPressed()\0unloadSingleButtonPressed()\0"
+    "unloadAllButtonPressed()\0"
     "toggleCloudSelection(QListWidgetItem*)\0"
-    "exitApplication()\0"
+    "exitApplication()\0convertAction()\0"
 };
 
 void PCLViewer::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -53,11 +56,13 @@ void PCLViewer::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         Q_ASSERT(staticMetaObject.cast(_o));
         PCLViewer *_t = static_cast<PCLViewer *>(_o);
         switch (_id) {
-        case 0: _t->saveButtonPressed(); break;
-        case 1: _t->loadButtonPressed(); break;
-        case 2: _t->streamButtonPressed(); break;
-        case 3: _t->toggleCloudSelection((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
-        case 4: _t->exitApplication(); break;
+        case 0: _t->loadButtonPressed(); break;
+        case 1: _t->streamButtonPressed(); break;
+        case 2: _t->unloadSingleButtonPressed(); break;
+        case 3: _t->unloadAllButtonPressed(); break;
+        case 4: _t->toggleCloudSelection((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
+        case 5: _t->exitApplication(); break;
+        case 6: _t->convertAction(); break;
         default: ;
         }
     }
@@ -95,9 +100,9 @@ int PCLViewer::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 5)
+        if (_id < 7)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 5;
+        _id -= 7;
     }
     return _id;
 }
